@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\userModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class userController extends Controller
 {
@@ -12,7 +13,11 @@ class userController extends Controller
     public function index()
     {
         $users = userModel::with('role')->get();
-        return response()->json($users);
+        // return response()->json($users);
+        return response()->json([
+            'success' => true, // ✅ Tambahan response format konsisten
+            'data' => $users
+        ]);
     }
 
     // Menambahkan user baru
@@ -29,10 +34,15 @@ class userController extends Controller
             'role_id' => $validated['role_id'],
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => $validated['password'],
+            // 'password' => $validated['password'],
+            'password' => Hash::make($validated['password']),  // ✅ Password dienkripsi
         ]);
 
-        return response()->json($user, 201); // 201 berarti berhasil dibuat
+        return response()->json([
+            'success' => true, // ✅ Format response lebih rapi
+            'message' => 'User created successfully',
+            'data' => $user
+        ], 201);
     }
 
     public function show($id)
@@ -40,7 +50,7 @@ class userController extends Controller
         $user = userModel::with('role')->find($id);
 
         if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['success' => false, 'message' => 'User not found'], 404); // ✅ Format error lebih konsisten
         }
 
         return response()->json($user);
@@ -65,10 +75,14 @@ class userController extends Controller
             'role_id' => $validated['role_id'],
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => $validated['password'],
+            'password' => Hash::make($validated['password']), // ✅ Enkripsi password saat update
         ]);      
 
-        return response()->json($user); // Kembali data role yang sudah diperbarui
+        return response()->json([
+            'success' => true,
+            'message' => 'User updated successfully',
+            'data' => $user
+        ]);
     }
 
     public function destroy($id)
@@ -81,6 +95,9 @@ class userController extends Controller
 
         $user->delete();
 
-        return response()->json(['message' => 'User deleted successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully'
+        ]);
     }
 }

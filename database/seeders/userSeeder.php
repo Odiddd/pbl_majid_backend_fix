@@ -15,25 +15,25 @@ class userSeeder extends Seeder
     {
         $data = [
             [
-                'user_id' => 1, 
+                // 'user_id' => 1, 
                 'role_id' => 1,
                 'name' => 'yonatan',
                 'email' => 'yonadmin@gmail.com',
-                'password' => 'simasjid123',
+                'password' => bcrypt('simasjid123'),
             ],
             [
-                'user_id' => 2, 
+                // 'user_id' => 2, 
                 'role_id' => 2,
                 'name' => 'admin1',
                 'email' => 'admin1@gmail.com',
-                'password' => 'abcd1234',
+                'password' => bcrypt('abcd1234'),
             ],
             [
-                'user_id' => 3, 
+                // 'user_id' => 3, 
                 'role_id' => 2,
                 'name' => 'admin2',
                 'email' => 'admin2@gmail.com',
-                'password' => '1234abc',
+                'password' => bcrypt('1234abc'),
             ],
         
         ];
