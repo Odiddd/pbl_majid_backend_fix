@@ -23,10 +23,10 @@ return new class extends Migration
             $table->double('jumlah_tamu')->nullable();
             $table->enum('status_reservasi', ['menunggu', 'dikonfirmasi', 'dijadwalkan', 'dilaksanakan', 'selesai', 'batal'])->default('menunggu');
             $table->string('mengetahui')->nullable();
-            $table->double('tagihan')->nullable()->default(0);
-            $table->enum('status_pembayaran', ['pending', 'success', 'failed'])->default('pending');
+            // $table->double('tagihan')->nullable()->default(0);
+            // $table->enum('status_pembayaran', ['pending', 'success', 'failed'])->default('pending');
             $table->text('keterangan')->nullable();
-            $table->boolean('masuk_transaksi')->default(false);
+            // $table->boolean('masuk_transaksi')->default(false);
             $table->timestamps();
 
             $table->foreign('tempat_reservasi_id')->references('tempat_reservasi_id')->on('tempat_reservasi');
