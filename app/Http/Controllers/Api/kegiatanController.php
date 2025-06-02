@@ -116,11 +116,18 @@ class KegiatanController extends Controller
         // }
 
         // Hapus gambar jika ada flag remove_image dan tidak upload gambar baru
-        if ($request->has('remove_image') && !$request->hasFile('image')) {
-            if ($kegiatan->image && Storage::disk('public')->exists($kegiatan->image)) {
-                Storage::disk('public')->delete($kegiatan->image);
+        // if ($request->has('remove_image') && !$request->hasFile('image')) {
+        //     if ($kegiatan->image && Storage::disk('public')->exists($kegiatan->image)) {
+        //         Storage::disk('public')->delete($kegiatan->image);
+        //     }
+        //     $data['image'] = null;
+        // }
+
+        if ($request->has('hapus_gambar') && $request->hapus_gambar == '1') {
+            if ($kegiatan->image && Storage::exists('public/' . $kegiatan->image)) {
+                Storage::delete('public/' . $kegiatan->image);
             }
-            $data['image'] = null;
+            $kegiatan->image = null;
         }
 
         // Jika upload gambar baru

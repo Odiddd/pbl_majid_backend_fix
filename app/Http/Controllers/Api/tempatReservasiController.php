@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 
-class TempatReservasiController extends Controller
+class tempatReservasiController extends Controller
 {
     public function index()
     {

@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\jenisTransaksiController;
+
 Route::get('/test', function () {
     return response()->json(['message' => 'CORS Test Successful dari laravel']);
 });
@@ -61,6 +63,14 @@ Route::put('/transaksi/{id}', [transaksiController::class, 'update']);
 Route::patch('/transaksi/{id}', [transaksiController::class, 'update']);
 Route::delete('/transaksi/{id}', [transaksiController::class, 'destroy']);
 
+Route::get('/jenis_transaksi', [jenisTransaksiController::class, 'index']);
+    Route::post('/jenisTransaksi', [jenisTransaksiController::class, 'store']);
+    Route::get('/jenis_transaksi/{id}', [jenisTransaksiController::class, 'show']);
+    Route::post('/jenisTransaksi/{id}', [jenisTransaksiController::class, 'update']); // PATCH via _method
+    Route::put('/jenisTransaksi/{id}', [jenisTransaksiController::class, 'update']);
+    Route::patch('/jenisTransaksi/{id}', [jenisTransaksiController::class, 'update']);
+    Route::delete('/jenisTransaksi/{id}', [jenisTransaksiController::class, 'destroy']);
+
 use App\Http\Controllers\Api\reservasiController;
 
 Route::prefix('reservasi')->group(function () {
@@ -73,13 +83,13 @@ Route::prefix('reservasi')->group(function () {
     
 });
 
-use App\Http\Controllers\Api\TempatReservasiController;
+use App\Http\Controllers\Api\tempatReservasiController;
 
 Route::prefix('tempatReservasi')->group(function () {
-    Route::get('/', [TempatReservasiController::class, 'index']);           
-    Route::post('/', [TempatReservasiController::class, 'store']);          
-    Route::get('/{id}', [TempatReservasiController::class, 'show']);        
-    Route::put('/{id}', [TempatReservasiController::class, 'update']);      
-    Route::patch('/{id}', [TempatReservasiController::class, 'update']);      
-    Route::delete('/{id}', [TempatReservasiController::class, 'destroy']);  
+    Route::get('/', [tempatReservasiController::class, 'index']);           
+    Route::post('/', [tempatReservasiController::class, 'store']);          
+    Route::get('/{id}', [tempatReservasiController::class, 'show']);        
+    Route::put('/{id}', [tempatReservasiController::class, 'update']);      
+    Route::patch('/{id}', [tempatReservasiController::class, 'update']);      
+    Route::delete('/{id}', [tempatReservasiController::class, 'destroy']);  
 });

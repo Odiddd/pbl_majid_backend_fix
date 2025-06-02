@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\userModel;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,7 +22,7 @@ class DatabaseSeeder extends Seeder
         transaksiSeeder::class,
         informasiSeeder::class,
         kegiatanSeeder::class,
-        reservasiSeeder::class,
+        tempatReservasiSeeder::class,
         // tambahkan seeder lainnya di sini
     ]);
     }

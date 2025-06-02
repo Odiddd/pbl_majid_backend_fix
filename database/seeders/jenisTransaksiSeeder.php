@@ -18,5 +18,5 @@ class jenisTransaksiSeeder extends Seeder
             ['jenis_transaksi_id' => 2, 'jenis_name' => 'tunai'],
         ];
         DB::table('jenis_transaksi')->insert($data);
-    }
+    }   
 }

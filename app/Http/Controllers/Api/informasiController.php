@@ -71,12 +71,20 @@ class informasiController extends Controller
         ];
 
         // Hapus gambar jika ada flag remove_image dan tidak upload gambar baru
-        if ($request->has('remove_image') && !$request->hasFile('image')) {
-            if ($informasi->image && Storage::disk('public')->exists($informasi->image)) {
-                Storage::disk('public')->delete($informasi->image);
+        // if ($request->has('remove_image') && !$request->hasFile('image')) {
+        //     if ($informasi->image && Storage::disk('public')->exists($informasi->image)) {
+        //         Storage::disk('public')->delete($informasi->image);
+        //     }
+        //     $data['image'] = null;
+        // }
+        
+        if ($request->has('hapus_gambar') && $request->hapus_gambar == '1') {
+            if ($informasi->image && Storage::exists('public/' . $informasi->image)) {
+                Storage::delete('public/' . $informasi->image);
             }
-            $data['image'] = null;
+            $informasi->image = null;
         }
+
 
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
