@@ -16,21 +16,23 @@ class reservasiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_pemesan' => 'required|string',
-            'kontak_pemesan' => 'required|string',
+            'nama_pemesan' => 'required|string|max:255',
+            'kontak_pemesan' => 'required|string|max:255',
             'tempat_reservasi_id' => 'required|exists:tempat_reservasi,tempat_reservasi_id',
-            'nama_acara' => 'required|string',
+            'nama_acara' => 'required|string|max:255',
             'tanggal_acara' => 'required|date',
             'waktu_mulai' => 'nullable|date_format:H:i:s',
             'waktu_selesai' => 'nullable|date_format:H:i:s|after_or_equal:waktu_mulai',
             'jumlah_tamu' => 'nullable|numeric',
-            'status_reservasi' => 'required|in:menunggu,dikonfirmasi,dijadwalkan,dilaksanakan,selesai,batal',
-            'mengetahui' => 'nullable|string',
-            'tagihan' => 'nullable|numeric',
-            'status_pembayaran' => 'required|in:pending,success,failed',
+            'status_reservasi' => 'nullable|in:menunggu,dikonfirmasi,dijadwalkan,dilaksanakan,selesai,batal',
+            'mengetahui' => 'nullable|string|max:255',
             'keterangan' => 'nullable|string',
-            'masuk_transaksi' => 'boolean',
         ]);
+
+        // Set default status jika tidak disediakan
+        if (!isset($validated['status_reservasi'])) {
+            $validated['status_reservasi'] = 'menunggu';
+        }
 
         $reservasi = reservasiModel::create($validated);
         return response()->json($reservasi, 201);
@@ -47,20 +49,17 @@ class reservasiController extends Controller
         $reservasi = reservasiModel::findOrFail($id);
 
         $validated = $request->validate([
-            'nama_pemesan' => 'sometimes|required|string',
-            'kontak_pemesan' => 'sometimes|required|string',
+            'nama_pemesan' => 'sometimes|required|string|max:255',
+            'kontak_pemesan' => 'sometimes|required|string|max:255',
             'tempat_reservasi_id' => 'sometimes|required|exists:tempat_reservasi,tempat_reservasi_id',
-            'nama_acara' => 'sometimes|required|string',
+            'nama_acara' => 'sometimes|required|string|max:255',
             'tanggal_acara' => 'sometimes|required|date',
             'waktu_mulai' => 'nullable|date_format:H:i:s',
             'waktu_selesai' => 'nullable|date_format:H:i:s|after_or_equal:waktu_mulai',
             'jumlah_tamu' => 'nullable|numeric',
             'status_reservasi' => 'sometimes|required|in:menunggu,dikonfirmasi,dijadwalkan,dilaksanakan,selesai,batal',
-            'mengetahui' => 'nullable|string',
-            'tagihan' => 'nullable|numeric',
-            'status_pembayaran' => 'sometimes|required|in:pending,success,failed',
+            'mengetahui' => 'nullable|string|max:255',
             'keterangan' => 'nullable|string',
-            'masuk_transaksi' => 'boolean',
         ]);
 
         $reservasi->update($validated);
@@ -73,5 +72,19 @@ class reservasiController extends Controller
         $reservasi->delete();
 
         return response()->json(['message' => 'Reservasi berhasil dihapus']);
+    }
+
+    // Method tambahan untuk update status
+    public function updateStatus(Request $request, $id)
+    {
+        $reservasi = reservasiModel::findOrFail($id);
+
+        $validated = $request->validate([
+            'status_reservasi' => 'required|in:menunggu,dikonfirmasi,dijadwalkan,dilaksanakan,selesai,batal',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        $reservasi->update($validated);
+        return response()->json($reservasi);
     }
 }
