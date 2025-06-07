@@ -175,11 +175,14 @@ class KegiatanController extends Controller
     {
         $kegiatan = kegiatanModel::findOrFail($id);
 
-        if ($kegiatan->image) {
+        if ($kegiatan->image && Storage::disk('public')->exists($kegiatan->image)) {
             Storage::disk('public')->delete($kegiatan->image);
         }
 
         $kegiatan->delete();
-        return response()->json(null, 204);
+
+        return response()->json([
+            'message' => 'Kegiatan berhasil dihapus.'
+        ]);
     }
 }

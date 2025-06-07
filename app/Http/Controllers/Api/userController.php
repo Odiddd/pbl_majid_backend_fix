@@ -62,7 +62,7 @@ class userController extends Controller
             'role_id' => 'required|exists:role,role_id',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id .',user_id', // fix: allow current email
-            'password' => 'required|string|min:8',
+            'password' => 'nullable|string|min:8',
         ]);
 
         $user = userModel::find($id);
@@ -75,12 +75,18 @@ class userController extends Controller
             'role_id' => $validated['role_id'],
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']), // ✅ Enkripsi password saat update
         ]);      
+
+        // Hanya update password jika diisi
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+
+        $user->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'User updated successfully',
+            'message' => 'Admin berhasil diedit.',
             'data' => $user
         ]);
     }
@@ -97,7 +103,7 @@ class userController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'User deleted successfully'
+            'message' => 'Admin berhasil dihapus.'
         ]);
     }
 }

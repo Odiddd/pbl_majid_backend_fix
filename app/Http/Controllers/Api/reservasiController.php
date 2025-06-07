@@ -21,19 +21,31 @@ class reservasiController extends Controller
             'tempat_reservasi_id' => 'required|exists:tempat_reservasi,tempat_reservasi_id',
             'nama_acara' => 'required|string',
             'tanggal_acara' => 'required|date',
-            'waktu_mulai' => 'nullable|date_format:H:i:s',
-            'waktu_selesai' => 'nullable|date_format:H:i:s|after_or_equal:waktu_mulai',
+            'waktu_mulai' => 'nullable|date_format:H:i',
+            'waktu_selesai' => 'nullable|date_format:H:i|after_or_equal:waktu_mulai',
             'jumlah_tamu' => 'nullable|numeric',
-            'status_reservasi' => 'required|in:menunggu,dikonfirmasi,dijadwalkan,dilaksanakan,selesai,batal',
-            'mengetahui' => 'nullable|string',
-            'tagihan' => 'nullable|numeric',
-            'status_pembayaran' => 'required|in:pending,success,failed',
+            'status_reservasi' => 'nullable|in:menunggu,dikonfirmasi,dijadwalkan,dilaksanakan,selesai,batal',
             'keterangan' => 'nullable|string',
-            'masuk_transaksi' => 'boolean',
         ]);
 
-        $reservasi = reservasiModel::create($validated);
-        return response()->json($reservasi, 201);
+        $reservasi = reservasiModel::create([
+            'nama_pemesan' => $request->nama_pemesan,
+            'kontak_pemesan' => $request->kontak_pemesan,
+            'tempat_reservasi_id' => $request->tempat_reservasi_id,
+            'nama_acara' => $request->nama_acara,
+            'tanggal_acara' => $request->tanggal_acara,
+            'waktu_mulai' => $request->waktu_mulai,
+            'waktu_selesai' => $request->waktu_selesai,
+            'jumlah_tamu' => $request->jumlah_tamu,
+            'status_reservasi' => $request->status_reservasi ?? 'dijadwalkan',
+            'mengetahui' => $request->user()->name ?? null,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        return response()->json([
+            'message' => 'Reservasi berhasil disimpan.',
+            'data' => $reservasi
+        ], 201);
     }
 
     public function show($id)
@@ -52,19 +64,31 @@ class reservasiController extends Controller
             'tempat_reservasi_id' => 'sometimes|required|exists:tempat_reservasi,tempat_reservasi_id',
             'nama_acara' => 'sometimes|required|string',
             'tanggal_acara' => 'sometimes|required|date',
-            'waktu_mulai' => 'nullable|date_format:H:i:s',
-            'waktu_selesai' => 'nullable|date_format:H:i:s|after_or_equal:waktu_mulai',
+            'waktu_mulai' => 'nullable|date_format:H:i',
+            'waktu_selesai' => 'nullable|date_format:H:i|after_or_equal:waktu_mulai',
             'jumlah_tamu' => 'nullable|numeric',
             'status_reservasi' => 'sometimes|required|in:menunggu,dikonfirmasi,dijadwalkan,dilaksanakan,selesai,batal',
-            'mengetahui' => 'nullable|string',
-            'tagihan' => 'nullable|numeric',
-            'status_pembayaran' => 'sometimes|required|in:pending,success,failed',
             'keterangan' => 'nullable|string',
-            'masuk_transaksi' => 'boolean',
         ]);
 
-        $reservasi->update($validated);
-        return response()->json($reservasi);
+        $reservasi->update([
+            'nama_pemesan' => $request->nama_pemesan,
+            'kontak_pemesan' => $request->kontak_pemesan,
+            'tempat_reservasi_id' => $request->tempat_reservasi_id,
+            'nama_acara' => $request->nama_acara,
+            'tanggal_acara' => $request->tanggal_acara,
+            'waktu_mulai' => $request->waktu_mulai,
+            'waktu_selesai' => $request->waktu_selesai,
+            'jumlah_tamu' => $request->jumlah_tamu,
+            'status_reservasi' => $request->status_reservasi,
+            'mengetahui' => $request->user()->name ?? $reservasi->mengetahui,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        return response()->json([
+            'message' => 'Reservasi berhasil diperbarui.',
+            'data' => $reservasi
+        ]);
     }
 
     public function destroy($id)
