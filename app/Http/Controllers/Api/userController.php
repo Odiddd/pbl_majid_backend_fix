@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\userModel;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,7 +12,7 @@ class userController extends Controller
     // Menampilkan daftar semua user
     public function index()
     {
-        $users = userModel::with('role')->get();
+        $users = UserModel::with('role')->get();
         // return response()->json($users);
         return response()->json([
             'success' => true, // ✅ Tambahan response format konsisten
@@ -30,7 +30,7 @@ class userController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        $user = userModel::create([
+        $user = UserModel::create([
             'role_id' => $validated['role_id'],
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -47,7 +47,7 @@ class userController extends Controller
 
     public function show($id)
     {
-        $user = userModel::with('role')->find($id);
+        $user = UserModel::with('role')->find($id);
 
         if (!$user) {
             return response()->json(['success' => false, 'message' => 'User not found'], 404); // ✅ Format error lebih konsisten
@@ -65,7 +65,7 @@ class userController extends Controller
             'password' => 'nullable|string|min:8',
         ]);
 
-        $user = userModel::find($id);
+        $user = UserModel::find($id);
 
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
@@ -93,7 +93,7 @@ class userController extends Controller
 
     public function destroy($id)
     {
-        $user = userModel::find($id);
+        $user = UserModel::find($id);
 
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
