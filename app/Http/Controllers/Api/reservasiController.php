@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\reservasiModel;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class reservasiController extends Controller
 {
@@ -20,7 +21,7 @@ class reservasiController extends Controller
             'kontak_pemesan' => 'required|string|max:255',
             'tempat_reservasi_id' => 'required|exists:tempat_reservasi,tempat_reservasi_id',
             'nama_acara' => 'required|string|max:255',
-            'tanggal_acara' => 'required|date',
+            'tanggal_acara' => 'required|date|after_or_equal:' . Carbon::now()->toDateString(),
             'waktu_mulai' => 'nullable|date_format:H:i',
             'waktu_selesai' => 'nullable|date_format:H:i|after_or_equal:waktu_mulai',
             'jumlah_tamu' => 'nullable|numeric',
