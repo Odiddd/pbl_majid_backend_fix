@@ -46,7 +46,7 @@ class transaksiController extends Controller
             'kategori' => $validated['kategori'],
             'jenis_transaksi_id' => $validated['jenis_transaksi_id'],
             'nominal' => $validated['nominal'],
-            'sumber' => $validated['sumber'] ?? 'hamba Allah',
+            'sumber' => $validated['sumber'] ?? '-',
             'mengetahui' => $user->name, // otomatis dari user login
             'status' => $validated['status'] ?? 'draft',
             'keterangan' => $validated['keterangan'],
@@ -102,7 +102,7 @@ class transaksiController extends Controller
             'kategori' => $validated['kategori'],
             'jenis_transaksi_id' => $validated['jenis_transaksi_id'],
             'nominal' => $validated['nominal'],
-            'sumber' => $validated['sumber'] ?? 'hamba Allah',
+            'sumber' => $validated['sumber'] ?? '-',
             'mengetahui' => $user->name, // otomatis dari user login
             'status' => $validated['status'],
             'keterangan' => $validated['keterangan'],
